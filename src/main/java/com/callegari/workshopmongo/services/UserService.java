@@ -1,27 +1,31 @@
 package com.callegari.workshopmongo.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.callegari.workshopmongo.domain.User;
 import com.callegari.workshopmongo.repository.UserRepository;
+import com.callegari.workshopmongo.services.exception.ObjectNotFoundException;
 
 
 @Service
 public class UserService {
 
     @Autowired
-    private UserRepository repository;
+    private UserRepository repo;
 
     public List<User> findAll() {
 
-        List<User> list = repository.findAll();
+        return repo.findAll();
 
-        System.out.println("Usuarios encontrados: " + list.size());
-        System.out.println(list);
-
-        return list;
     }
+    
+    public User findById(String id) { 
+    	 Optional<User> obj = repo.findById(id); 
+    	 return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado")); 
+    	} 
+    
 }
